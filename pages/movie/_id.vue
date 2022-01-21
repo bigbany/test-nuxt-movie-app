@@ -78,33 +78,24 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '~/components/Loader'
-
 export default {
   components: {
     Loader
   },
-
- async asyncData({store, params}){
-    //. ssr 진행된기전에 미리 해놓자
-    // this 키워드 사용불가 context에서 구조분해한
-    // store, route, params 를 사용하자
-    await store.$store.dispatch('movie/searchMovieWithId', {
-    id: params.id
+  async asyncData({ store, params }) {
+    await store.dispatch('movie/searchMovieWithId', {
+      id: params.id
     })
     return {
       imageLoading: true
     }
   },
-
-
   computed: {
     ...mapState('movie', [
       'loading',
       'theMovie'
     ])
   },
-
-
   methods: {
     requestDiffSizeImage(url, size = 700) {
       // 잘못된 URL(Poster)인 경우.
@@ -119,18 +110,18 @@ export default {
           this.imageLoading = false
         })
       return src
-    },
-    head(){
-      return {
-        meta: [
-            {hid: 'og:type', property:'og:type',content: 'website'},
-            {hid: 'og:site_name', property:'og:site_name',content: 'Nuxt Movie App'},
-            {hid: 'og:title', property:'og:title',content: this.theMovie.Title},
-            {hid: 'og:description', property:'og:description',content: this.theMovie.Plot},
-            {hid: 'og:image', property:'og:image',content: this.theMovie.Poster},
-            {hid: 'og:url', property:'og:url',content: `${process.env.CLIENT_URL}${this.$route.fullPath}`},
-        ]
-      }
+    }
+  },
+  head() {
+    return {
+      meta: [
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+        { hid: 'og:site_name', property: 'og:site_name', content: 'Nuxt Movie App' },
+        { hid: 'og:title', property: 'og:title', content: this.theMovie.Title },
+        { hid: 'og:description', property: 'og:description', content: this.theMovie.Plot },
+        { hid: 'og:image', property: 'og:image', content: this.theMovie.Poster },
+        { hid: 'og:url', property: 'og:url', content: `${process.env.CLIENT_URL}${this.$route.fullPath}` }
+      ]
     }
   }
 }
@@ -140,7 +131,7 @@ export default {
 .container {
   padding-top: 40px;
 }
-.skeletons { 
+.skeletons {
   display: flex;
   .poster {
     flex-shrink: 0;
